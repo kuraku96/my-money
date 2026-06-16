@@ -7,7 +7,6 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700&display=swap');
-
   :root {
     --bg: #0F1117;
     --surface: #181C27;
@@ -16,7 +15,6 @@
     --text: #E8EAF0;
     --muted: #7A7F96;
     --accent: #5B8AF0;
-    --accent2: #7B5CF0;
     --green: #34D399;
     --red: #F87171;
     --amber: #FBBF24;
@@ -25,221 +23,104 @@
     --radius: 12px;
     --radius-sm: 8px;
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'Pretendard', -apple-system, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-  }
+  body { font-family: 'Pretendard', -apple-system, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
-  /* HEADER */
-  header {
-    padding: 1.25rem 1.5rem;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .logo { font-size: 16px; font-weight: 700; letter-spacing: -0.3px; }
+  header { padding: 1.1rem 1.5rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  .logo { font-size: 16px; font-weight: 700; }
   .logo span { color: var(--accent); }
   .last-updated { font-size: 12px; color: var(--muted); }
-  .refresh-btn {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    color: var(--text);
-    font-size: 12px;
-    padding: 5px 12px;
-    border-radius: 6px;
-    cursor: pointer;
-    display: flex; align-items: center; gap: 5px;
-    font-family: inherit;
-  }
+  .refresh-btn { background: var(--surface2); border: 1px solid var(--border); color: var(--text); font-size: 12px; padding: 5px 12px; border-radius: 6px; cursor: pointer; font-family: inherit; }
   .refresh-btn:hover { background: var(--border); }
 
   main { max-width: 960px; margin: 0 auto; padding: 1.5rem; }
 
-  /* SUMMARY CARDS */
-  .summary-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 10px;
-    margin-bottom: 1.5rem;
-  }
-  .metric {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1.1rem 1.25rem;
-  }
-  .metric-label { font-size: 12px; color: var(--muted); margin-bottom: 6px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; }
-  .metric-value { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; }
-  .metric-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
-  .metric.highlight { border-color: var(--accent); background: linear-gradient(135deg, #1A1E2E 0%, #1A2240 100%); }
+  .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; margin-bottom: 1.5rem; }
+  .metric { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.1rem; }
+  .metric.highlight { border-color: var(--accent); background: linear-gradient(135deg,#1A1E2E,#1A2240); }
+  .metric-label { font-size: 11px; color: var(--muted); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.04em; font-weight: 500; }
+  .metric-value { font-size: 20px; font-weight: 700; letter-spacing: -0.4px; }
   .metric.highlight .metric-value { color: var(--accent); }
+  .metric-sub { font-size: 12px; color: var(--muted); margin-top: 3px; }
   .positive { color: var(--green) !important; }
   .negative { color: var(--red) !important; }
 
-  /* TABS */
-  .tab-row {
-    display: flex; gap: 6px; margin-bottom: 1.25rem; overflow-x: auto;
-    padding-bottom: 2px;
-  }
-  .tab {
-    font-size: 13px; font-weight: 500;
-    padding: 6px 16px;
-    border-radius: 20px;
-    border: 1px solid var(--border);
-    background: transparent;
-    color: var(--muted);
-    cursor: pointer;
-    white-space: nowrap;
-    font-family: inherit;
-    transition: all 0.15s;
-  }
-  .tab:hover { color: var(--text); border-color: var(--accent); }
+  .tab-row { display: flex; gap: 6px; margin-bottom: 1.25rem; overflow-x: auto; padding-bottom: 2px; }
+  .tab { font-size: 13px; font-weight: 500; padding: 6px 16px; border-radius: 20px; border: 1px solid var(--border); background: transparent; color: var(--muted); cursor: pointer; white-space: nowrap; font-family: inherit; transition: all 0.15s; }
+  .tab:hover { color: var(--text); }
   .tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
 
-  /* CARDS */
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1.25rem;
-    margin-bottom: 1rem;
-  }
-  .card-title {
-    font-size: 12px; font-weight: 600; color: var(--muted);
-    text-transform: uppercase; letter-spacing: 0.05em;
-    margin-bottom: 1rem;
-  }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; margin-bottom: 1rem; }
+  .card-title { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem; }
+
+  /* GAUGE */
+  .gauge-wrap { display: flex; flex-direction: column; gap: 12px; }
+  .gauge-row { display: flex; align-items: center; gap: 10px; }
+  .gauge-name { font-size: 13px; width: 88px; flex-shrink: 0; }
+  .gauge-track { flex: 1; height: 22px; background: var(--surface2); border-radius: 20px; overflow: hidden; }
+  .gauge-fill { height: 100%; border-radius: 20px; display: flex; align-items: center; padding: 0 10px; min-width: 40px; transition: width 0.5s ease; }
+  .gauge-fill span { font-size: 11px; font-weight: 600; color: #fff; }
+  .gauge-amt { font-size: 12px; color: var(--muted); width: 72px; text-align: right; flex-shrink: 0; }
 
   /* ASSET ROW */
-  .asset-row {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 10px 0;
-    border-bottom: 1px solid var(--border);
-  }
-  .asset-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .asset-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .asset-row:last-child { border-bottom: none; }
   .asset-left { display: flex; align-items: center; gap: 10px; }
-  .asset-icon {
-    width: 34px; height: 34px; border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 13px; font-weight: 700; flex-shrink: 0;
-  }
+  .asset-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; }
   .asset-name { font-size: 14px; font-weight: 600; }
   .asset-ticker { font-size: 12px; color: var(--muted); }
   .asset-right { text-align: right; }
   .asset-value { font-size: 14px; font-weight: 600; }
-  .asset-pl { font-size: 12px; color: var(--muted); }
-
-  /* BADGE */
-  .badge {
-    display: inline-block; font-size: 10px; font-weight: 700;
-    padding: 2px 7px; border-radius: 4px;
-    text-transform: uppercase; letter-spacing: 0.05em;
-  }
+  .asset-pl { font-size: 12px; }
+  .badge { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 4px; text-transform: uppercase; }
   .badge-stock { background: rgba(91,138,240,0.15); color: var(--accent); }
   .badge-etf { background: rgba(52,211,153,0.12); color: var(--green); }
   .badge-cash { background: rgba(251,191,36,0.12); color: var(--amber); }
   .badge-real { background: rgba(244,114,182,0.12); color: var(--pink); }
   .badge-irp { background: rgba(167,139,250,0.12); color: var(--purple); }
-
-  /* DONUT */
-  .donut-wrap { display: flex; align-items: center; gap: 2rem; }
-  .donut-wrap canvas { flex-shrink: 0; }
-  .legend { flex: 1; }
-  .legend-item {
-    display: flex; align-items: center; gap: 8px;
-    font-size: 13px; margin-bottom: 10px;
-  }
-  .legend-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
-  .legend-pct { margin-left: auto; font-weight: 600; }
-  .legend-val { font-size: 12px; color: var(--muted); margin-left: 4px; }
-
-  /* INPUT AREA */
-  .add-section {
-    margin-top: 1rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--border);
-  }
-  .add-label { font-size: 12px; color: var(--muted); margin-bottom: 8px; font-weight: 500; }
-  .input-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
-  .input-row input {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    color: var(--text);
-    font-size: 13px;
-    padding: 7px 10px;
-    border-radius: var(--radius-sm);
-    flex: 1; min-width: 100px;
-    font-family: inherit;
-    outline: none;
-  }
-  .input-row input:focus { border-color: var(--accent); }
-  .input-row input::placeholder { color: var(--muted); }
-  .add-btn {
-    background: var(--accent);
-    color: #fff;
-    border: none;
-    font-size: 13px; font-weight: 600;
-    padding: 7px 16px;
-    border-radius: var(--radius-sm);
-    cursor: pointer;
-    font-family: inherit;
-    white-space: nowrap;
-  }
-  .add-btn:hover { opacity: 0.88; }
-  .del-btn {
-    background: none; border: none; color: var(--muted);
-    cursor: pointer; font-size: 16px; padding: 0 4px; line-height: 1;
-  }
+  .del-btn { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 16px; padding: 0 4px; }
   .del-btn:hover { color: var(--red); }
 
-  .hint { font-size: 12px; color: var(--muted); margin-top: 8px; line-height: 1.5; }
+  /* HISTORY */
+  .hist-hero { margin-bottom: 1.25rem; }
+  .hist-total { font-size: 28px; font-weight: 700; letter-spacing: -0.6px; }
+  .hist-change { font-size: 13px; margin-top: 3px; }
+  .log-item { display: flex; align-items: center; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid var(--border); }
+  .log-item:last-child { border-bottom: none; }
+  .log-date { font-size: 13px; color: var(--muted); }
+  .log-right { text-align: right; }
+  .log-total { font-size: 14px; font-weight: 500; }
+  .log-delta { font-size: 12px; }
+  .record-btn { background: var(--accent); color: #fff; border: none; border-radius: var(--radius-sm); padding: 9px 0; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; width: 100%; margin-top: 14px; }
+  .record-btn:hover { opacity: 0.88; }
+  .empty-hist { font-size: 13px; color: var(--muted); padding: 20px 0; text-align: center; }
 
-  .loading-tag {
-    font-size: 11px; background: var(--surface2);
-    padding: 2px 8px; border-radius: 20px; color: var(--muted);
-    display: inline-flex; align-items: center; gap: 4px;
-  }
-  .loading-tag.live { color: var(--green); }
+  /* ADD */
+  .add-section { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+  .add-label { font-size: 12px; color: var(--muted); margin-bottom: 8px; font-weight: 500; }
+  .input-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .input-row input { background: var(--bg); border: 1px solid var(--border); color: var(--text); font-size: 13px; padding: 7px 10px; border-radius: var(--radius-sm); flex: 1; min-width: 90px; font-family: inherit; outline: none; }
+  .input-row input:focus { border-color: var(--accent); }
+  .input-row input::placeholder { color: var(--muted); }
+  .add-btn { background: var(--accent); color: #fff; border: none; font-size: 13px; font-weight: 600; padding: 7px 16px; border-radius: var(--radius-sm); cursor: pointer; font-family: inherit; white-space: nowrap; }
+  .hint { font-size: 12px; color: var(--muted); margin-top: 8px; line-height: 1.6; }
+
+  .price-status { font-size: 11px; background: var(--surface2); padding: 2px 8px; border-radius: 20px; color: var(--muted); }
+  .price-status.live { color: var(--green); }
   .spin { display: inline-block; animation: spin 1s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
+  .empty-state { font-size: 13px; color: var(--muted); padding: 10px 0; }
 
-  .empty-state { font-size: 13px; color: var(--muted); padding: 12px 0; }
-
-  /* MODAL */
-  .modal-overlay {
-    display: none; position: fixed; inset: 0;
-    background: rgba(0,0,0,0.7); z-index: 100;
-    align-items: center; justify-content: center;
-  }
-  .modal-overlay.open { display: flex; }
-  .modal {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: var(--radius); padding: 1.5rem;
-    width: 90%; max-width: 400px;
-  }
-  .modal h3 { font-size: 16px; font-weight: 700; margin-bottom: 1rem; }
-  .modal label { font-size: 12px; color: var(--muted); display: block; margin-bottom: 4px; margin-top: 12px; }
-  .modal input {
-    width: 100%; background: var(--bg); border: 1px solid var(--border);
-    color: var(--text); font-size: 14px; padding: 8px 10px;
-    border-radius: var(--radius-sm); font-family: inherit; outline: none;
-  }
-  .modal input:focus { border-color: var(--accent); }
-  .modal-btns { display: flex; gap: 8px; margin-top: 1.25rem; }
-  .modal-btns button { flex: 1; padding: 9px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; border: none; }
-  .btn-cancel { background: var(--surface2); color: var(--muted); }
-  .btn-ok { background: var(--accent); color: #fff; }
+  .chart-period-row { display: flex; gap: 6px; margin-bottom: 12px; }
+  .period-btn { font-size: 12px; padding: 3px 10px; border-radius: 20px; border: 1px solid var(--border); background: transparent; color: var(--muted); cursor: pointer; font-family: inherit; }
+  .period-btn.active { background: var(--surface2); color: var(--text); border-color: var(--accent); }
 
   @media (max-width: 600px) {
     main { padding: 1rem; }
     .summary-grid { grid-template-columns: repeat(2, 1fr); }
-    .donut-wrap { flex-direction: column; }
-    .metric-value { font-size: 18px; }
+    .metric-value { font-size: 17px; }
+    .gauge-name { width: 72px; font-size: 12px; }
+    .gauge-amt { width: 60px; font-size: 11px; }
   }
 </style>
 </head>
@@ -254,7 +135,6 @@
 </header>
 
 <main>
-  <!-- SUMMARY -->
   <div class="summary-grid">
     <div class="metric highlight">
       <div class="metric-label">총 자산</div>
@@ -283,23 +163,20 @@
     </div>
   </div>
 
-  <!-- TABS -->
   <div class="tab-row">
-    <button class="tab active" onclick="showTab('overview')">📊 전체 현황</button>
-    <button class="tab" onclick="showTab('stocks')">📈 주식/ETF</button>
-    <button class="tab" onclick="showTab('cash')">💰 예적금/현금</button>
-    <button class="tab" onclick="showTab('re')">🏠 부동산/전세</button>
-    <button class="tab" onclick="showTab('irp')">🏦 IRP/연금</button>
+    <button class="tab active" onclick="showTab('overview')">전체 현황</button>
+    <button class="tab" onclick="showTab('stocks')">주식/ETF</button>
+    <button class="tab" onclick="showTab('cash')">예적금/현금</button>
+    <button class="tab" onclick="showTab('re')">부동산/전세</button>
+    <button class="tab" onclick="showTab('irp')">IRP/연금</button>
+    <button class="tab" onclick="showTab('history')">📅 자산변화</button>
   </div>
 
-  <!-- OVERVIEW TAB -->
+  <!-- OVERVIEW -->
   <div id="tab-overview">
     <div class="card">
       <div class="card-title">자산 배분</div>
-      <div class="donut-wrap">
-        <canvas id="donut" width="170" height="170"></canvas>
-        <div class="legend" id="legend"></div>
-      </div>
+      <div class="gauge-wrap" id="gauge-list"></div>
     </div>
     <div class="card">
       <div class="card-title">전체 자산 목록</div>
@@ -307,33 +184,29 @@
     </div>
   </div>
 
-  <!-- STOCKS TAB -->
+  <!-- STOCKS -->
   <div id="tab-stocks" style="display:none;">
     <div class="card">
       <div class="card-title" style="display:flex;align-items:center;justify-content:space-between;">
         <span>보유 종목</span>
-        <span id="price-status" class="loading-tag">가격 로드 전</span>
+        <span id="price-status" class="price-status">가격 로드 전</span>
       </div>
       <div id="stock-list"></div>
       <div class="add-section">
         <div class="add-label">종목 추가</div>
         <div class="input-row">
-          <input type="text" id="s-ticker" placeholder="티커 (예: 005930 / AAPL)" style="max-width:180px;" />
-          <input type="text" id="s-name" placeholder="종목명" style="max-width:130px;" />
-          <input type="number" id="s-qty" placeholder="수량" style="max-width:80px;" />
-          <input type="number" id="s-avg" placeholder="평균단가(₩)" style="max-width:120px;" />
+          <input type="text" id="s-ticker" placeholder="티커 (005930 / AAPL)" style="max-width:160px;" />
+          <input type="text" id="s-name" placeholder="종목명" style="max-width:120px;" />
+          <input type="number" id="s-qty" placeholder="수량" style="max-width:75px;" />
+          <input type="number" id="s-avg" placeholder="평균단가(₩)" style="max-width:115px;" />
           <button class="add-btn" onclick="addStock()">추가</button>
         </div>
-        <div class="hint">
-          국내: 티커에 종목코드(6자리) 입력 → ex. <b>005930</b> (삼성전자), <b>379800</b> (KODEX S&P500)<br>
-          해외: 티커에 심볼 입력 → ex. <b>AAPL</b>, <b>MSFT</b>, <b>VOO</b><br>
-          ⚠️ 주가는 Yahoo Finance API로 조회 (국내 15분 지연, 해외 실시간에 가까움)
-        </div>
+        <div class="hint">국내: 종목코드 6자리 (예: 005930 삼성전자, 379800 KODEX S&P500)<br>해외: 심볼 입력 (예: AAPL, MSFT, VOO) — Yahoo Finance API 연동</div>
       </div>
     </div>
   </div>
 
-  <!-- CASH TAB -->
+  <!-- CASH -->
   <div id="tab-cash" style="display:none;">
     <div class="card">
       <div class="card-title">예적금 / 현금</div>
@@ -349,7 +222,7 @@
     </div>
   </div>
 
-  <!-- REAL ESTATE TAB -->
+  <!-- RE -->
   <div id="tab-re" style="display:none;">
     <div class="card">
       <div class="card-title">부동산 / 전세보증금</div>
@@ -365,7 +238,7 @@
     </div>
   </div>
 
-  <!-- IRP TAB -->
+  <!-- IRP -->
   <div id="tab-irp" style="display:none;">
     <div class="card">
       <div class="card-title">IRP / 연금</div>
@@ -380,337 +253,503 @@
       </div>
     </div>
   </div>
-</main>
 
-<!-- MODAL (edit) -->
-<div class="modal-overlay" id="modal">
-  <div class="modal">
-    <h3 id="modal-title">수정</h3>
-    <div id="modal-body"></div>
-    <div class="modal-btns">
-      <button class="btn-cancel" onclick="closeModal()">취소</button>
-      <button class="btn-ok" id="modal-ok">확인</button>
+  <!-- HISTORY -->
+  <div id="tab-history" style="display:none;">
+    <div class="card">
+      <div class="hist-hero">
+        <div style="font-size:12px;color:var(--muted);margin-bottom:4px;">총 자산 (오늘)</div>
+        <div class="hist-total" id="hist-today-val">₩0</div>
+        <div class="hist-change" id="hist-today-change">—</div>
+      </div>
+
+      <div class="chart-period-row">
+        <button class="period-btn active" onclick="setPeriod(30,this)">1개월</button>
+        <button class="period-btn" onclick="setPeriod(90,this)">3개월</button>
+        <button class="period-btn" onclick="setPeriod(180,this)">6개월</button>
+        <button class="period-btn" onclick="setPeriod(365,this)">1년</button>
+        <button class="period-btn" onclick="setPeriod(99999,this)">전체</button>
+      </div>
+
+      <div style="position:relative;height:180px;margin-bottom:1rem;">
+        <canvas id="hist-chart"></canvas>
+      </div>
+
+      <div class="card-title">기록 내역</div>
+      <div id="hist-log"></div>
+      <button class="record-btn" onclick="recordSnapshot()">+ 오늘 자산 스냅샷 저장</button>
     </div>
   </div>
-</div>
+</main>
 
 <script>
-// ─── DATA ───────────────────────────────────────────────────────────────────
-const LS_KEY = 'asset_dashboard_v1';
+const LS_KEY = 'asset_v2';
 let state = {
-  stocks: [],   // { ticker, name, qty, avg, price, type, krw }
-  cash: [],     // { id, name, amt }
-  re: [],       // { id, name, amt }
-  irp: [],      // { id, name, amt }
+  stocks: [],
+  cash: [],
+  re: [],
+  irp: [],
+  history: [],   // [{date:'2025-06-15', total:178600000}, ...]
   usdKrw: 1380,
   lastUpdated: null,
 };
 
 function loadState() {
-  try {
-    const saved = localStorage.getItem(LS_KEY);
-    if (saved) Object.assign(state, JSON.parse(saved));
-  } catch(e) {}
+  try { const s = localStorage.getItem(LS_KEY); if (s) Object.assign(state, JSON.parse(s)); } catch(e) {}
 }
+function saveState() { localStorage.setItem(LS_KEY, JSON.stringify(state)); }
 
-function saveState() {
-  localStorage.setItem(LS_KEY, JSON.stringify(state));
-}
-
-// ─── PRICE API ───────────────────────────────────────────────────────────────
-// Yahoo Finance v7 via allorigins proxy (CORS workaround)
+// ── PRICE ──
 async function fetchPrice(ticker) {
-  const isKorean = /^\d{6}$/.test(ticker);
-  const symbol = isKorean ? ticker + '.KS' : ticker;
-  const url = `https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?interval=1d&range=1d`;
+  const sym = /^\d{6}$/.test(ticker) ? ticker + '.KS' : ticker;
+  const url = `https://query1.finance.yahoo.com/v8/finance/chart/${sym}?interval=1d&range=1d`;
   const proxy = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
   try {
     const res = await fetch(proxy, { signal: AbortSignal.timeout(8000) });
-    const json = await res.json();
-    const data = JSON.parse(json.contents);
-    const price = data?.chart?.result?.[0]?.meta?.regularMarketPrice;
-    const currency = data?.chart?.result?.[0]?.meta?.currency;
-    if (!price) return null;
-    return { price, currency };
-  } catch(e) {
-    return null;
-  }
+    const j = await res.json();
+    const d = JSON.parse(j.contents);
+    const price = d?.chart?.result?.[0]?.meta?.regularMarketPrice;
+    const currency = d?.chart?.result?.[0]?.meta?.currency;
+    return price ? { price, currency } : null;
+  } catch(e) { return null; }
 }
-
 async function fetchUsdKrw() {
   try {
     const url = 'https://query1.finance.yahoo.com/v8/finance/chart/KRW%3DX?interval=1d&range=1d';
-    const proxy = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
-    const res = await fetch(proxy, { signal: AbortSignal.timeout(6000) });
-    const json = await res.json();
-    const data = JSON.parse(json.contents);
-    const rate = data?.chart?.result?.[0]?.meta?.regularMarketPrice;
-    if (rate) state.usdKrw = rate;
+    const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`, { signal: AbortSignal.timeout(6000) });
+    const j = await res.json();
+    const d = JSON.parse(j.contents);
+    const r = d?.chart?.result?.[0]?.meta?.regularMarketPrice;
+    if (r) state.usdKrw = r;
   } catch(e) {}
 }
-
 async function refreshPrices() {
   if (!state.stocks.length) return;
-  const statusEl = document.getElementById('price-status');
-  statusEl.innerHTML = '<span class="spin">↻</span> 조회 중...';
-  statusEl.className = 'loading-tag';
-
+  const el = document.getElementById('price-status');
+  el.innerHTML = '<span class="spin">↻</span> 조회 중...';
+  el.className = 'price-status';
   await fetchUsdKrw();
-
-  let ok = 0, fail = 0;
+  let ok = 0;
   for (const s of state.stocks) {
-    const result = await fetchPrice(s.ticker);
-    if (result) {
-      const isUSD = result.currency === 'USD';
-      s.price = isUSD ? result.price * state.usdKrw : result.price;
-      s.krw = isUSD;
-      ok++;
-    } else {
-      fail++;
-    }
+    const r = await fetchPrice(s.ticker);
+    if (r) { s.price = r.currency === 'USD' ? r.price * state.usdKrw : r.price; ok++; }
   }
-
   state.lastUpdated = new Date().toLocaleTimeString('ko-KR');
   document.getElementById('last-updated').textContent = `마지막 업데이트: ${state.lastUpdated}`;
-  statusEl.innerHTML = ok > 0 ? `✓ ${ok}개 갱신` : `⚠ 조회 실패`;
-  statusEl.className = 'loading-tag' + (ok > 0 ? ' live' : '');
-  saveState();
-  renderAll();
+  el.textContent = ok > 0 ? `✓ ${ok}개 갱신` : '⚠ 실패';
+  el.className = 'price-status' + (ok > 0 ? ' live' : '');
+  saveState(); renderAll();
 }
 
-// ─── FORMATTING ──────────────────────────────────────────────────────────────
+// ── CALC ──
 function fmt(n) { return '₩' + Math.round(n).toLocaleString('ko-KR'); }
 function fmtShort(n) {
-  const a = Math.abs(n);
-  const sign = n < 0 ? '-' : '+';
-  if (a >= 1e8) return sign + (a/1e8).toFixed(1) + '억';
-  if (a >= 1e4) return sign + (a/1e4).toFixed(0) + '만';
-  return (n >= 0 ? '+' : '') + Math.round(n).toLocaleString('ko-KR');
+  const a = Math.abs(n), s = n < 0 ? '-' : '+';
+  if (a >= 1e8) return s + (a/1e8).toFixed(1) + '억';
+  if (a >= 1e4) return s + Math.round(a/1e4) + '만';
+  return (n >= 0 ? '+' : '-') + Math.round(a).toLocaleString();
+}
+function fmtAmt(n) {
+  if (n >= 1e8) return (n/1e8).toFixed(1) + '억';
+  if (n >= 1e4) return Math.round(n/1e4) + '만';
+  return Math.round(n).toLocaleString();
 }
 function uid() { return Math.random().toString(36).slice(2); }
-const COLORS = ['#5B8AF0','#34D399','#F472B6','#A78BFA','#FBBF24','#60A5FA','#F87171','#6EE7B7'];
+function todayStr() { return new Date().toISOString().slice(0,10); }
 
-// ─── CALCS ───────────────────────────────────────────────────────────────────
-function stockTotal() { return state.stocks.reduce((s, x) => s + x.qty * (x.price || x.avg), 0); }
-function stockCost()  { return state.stocks.reduce((s, x) => s + x.qty * x.avg, 0); }
-function cashTotal()  { return state.cash.reduce((s, x) => s + x.amt, 0); }
-function reTotal()    { return state.re.reduce((s, x) => s + x.amt, 0); }
-function irpTotal()   { return state.irp.reduce((s, x) => s + x.amt, 0); }
+function stockTotal() { return state.stocks.reduce((s,x) => s + x.qty*(x.price||x.avg), 0); }
+function stockCost()  { return state.stocks.reduce((s,x) => s + x.qty*x.avg, 0); }
+function cashTotal()  { return state.cash.reduce((s,x) => s + x.amt, 0); }
+function reTotal()    { return state.re.reduce((s,x) => s + x.amt, 0); }
+function irpTotal()   { return state.irp.reduce((s,x) => s + x.amt, 0); }
+function grandTotal() { return stockTotal() + cashTotal() + reTotal() + irpTotal(); }
 
-// ─── RENDER ──────────────────────────────────────────────────────────────────
-let donutChart = null;
-
+// ── RENDER SUMMARY ──
 function renderSummary() {
   const st = stockTotal(), sc = stockCost(), ca = cashTotal(), re = reTotal(), ip = irpTotal();
   const total = st + ca + re + ip;
   const pl = st - sc;
   document.getElementById('total-val').textContent = fmt(total);
-  document.getElementById('total-pl').textContent = `투자원금 대비 손익: ${fmtShort(pl)}`;
+  document.getElementById('total-pl').textContent = `주식 손익 ${fmtShort(pl)}`;
+  document.getElementById('total-pl').className = 'metric-sub ' + (pl >= 0 ? 'positive' : 'negative');
   document.getElementById('stock-total').textContent = fmt(st);
   const plEl = document.getElementById('stock-pl');
-  plEl.textContent = `손익 ${fmtShort(pl)} (${sc > 0 ? ((pl/sc)*100).toFixed(1) : '0.0'}%)`;
+  plEl.textContent = `손익 ${fmtShort(pl)} (${sc>0?((pl/sc)*100).toFixed(1):'0.0'}%)`;
   plEl.className = 'metric-sub ' + (pl >= 0 ? 'positive' : 'negative');
   document.getElementById('cash-total').textContent = fmt(ca);
   document.getElementById('re-total').textContent = fmt(re);
   document.getElementById('irp-total').textContent = fmt(ip);
 }
 
-function renderDonut() {
+// ── RENDER GAUGE ──
+const CAT_COLORS = {
+  stock: '#5B8AF0', etf: '#34D399', cash: '#FBBF24', re: '#F472B6', irp: '#A78BFA'
+};
+function renderGauge() {
   const st = stockTotal(), ca = cashTotal(), re = reTotal(), ip = irpTotal();
   const total = st + ca + re + ip;
   const cats = [
-    { label: '주식/ETF', val: st, color: '#5B8AF0' },
-    { label: '예적금/현금', val: ca, color: '#FBBF24' },
     { label: '부동산/전세', val: re, color: '#F472B6' },
+    { label: '주식/ETF', val: st, color: '#5B8AF0' },
     { label: 'IRP/연금', val: ip, color: '#A78BFA' },
-  ].filter(c => c.val > 0);
+    { label: '예적금/현금', val: ca, color: '#FBBF24' },
+  ].filter(c => c.val > 0).sort((a,b) => b.val - a.val);
 
-  document.getElementById('legend').innerHTML = cats.map(c => {
-    const pct = total > 0 ? (c.val / total * 100).toFixed(1) : '0.0';
-    return `<div class="legend-item">
-      <div class="legend-dot" style="background:${c.color}"></div>
-      <span>${c.label}</span>
-      <span class="legend-pct">${pct}%</span>
-      <span class="legend-val">${fmt(c.val)}</span>
+  const el = document.getElementById('gauge-list');
+  if (!total) { el.innerHTML = '<div class="empty-state">자산을 추가하면 여기에 표시됩니다</div>'; return; }
+  el.innerHTML = cats.map(c => {
+    const pct = (c.val / total * 100).toFixed(1);
+    const barW = Math.max(parseFloat(pct), 4);
+    return `<div class="gauge-row">
+      <span class="gauge-name">${c.label}</span>
+      <div class="gauge-track">
+        <div class="gauge-fill" style="width:${barW}%;background:${c.color}">
+          <span>${pct}%</span>
+        </div>
+      </div>
+      <span class="gauge-amt">${fmtAmt(c.val)}</span>
     </div>`;
-  }).join('') || '<div class="empty-state">자산을 추가하면 차트가 표시됩니다</div>';
+  }).join('');
+}
 
-  const ctx = document.getElementById('donut').getContext('2d');
-  if (donutChart) donutChart.destroy();
-  donutChart = new Chart(ctx, {
-    type: 'doughnut',
+// ── RENDER ALL LIST ──
+function renderAllList() {
+  const el = document.getElementById('all-list');
+  const rows = [
+    ...state.stocks.map(s => ({ badge: s.type==='etf'?'badge-etf':'badge-stock', label: (s.type||'stock').toUpperCase(), name: s.name, val: s.qty*(s.price||s.avg) })),
+    ...state.cash.map(c => ({ badge:'badge-cash', label:'현금', name:c.name, val:c.amt })),
+    ...state.re.map(r => ({ badge:'badge-real', label:'부동산', name:r.name, val:r.amt })),
+    ...state.irp.map(r => ({ badge:'badge-irp', label:'IRP', name:r.name, val:r.amt })),
+  ].sort((a,b) => b.val - a.val);
+  if (!rows.length) { el.innerHTML = '<div class="empty-state">자산을 추가하면 여기에 표시됩니다</div>'; return; }
+  el.innerHTML = rows.map(r => `<div class="asset-row">
+    <div style="display:flex;align-items:center;gap:8px;">
+      <span class="badge ${r.badge}">${r.label}</span>
+      <span class="asset-name">${r.name}</span>
+    </div>
+    <span class="asset-value">${fmt(r.val)}</span>
+  </div>`).join('');
+}
+
+// ── RENDER STOCKS ──
+function renderStocks() {
+  const el = document.getElementById('stock-list');
+  if (!state.stocks.length) { el.innerHTML = '<div class="empty-state">보유 종목을 추가해주세요</div>'; return; }
+  el.innerHTML = state.stocks.map((s,i) => {
+    const val = s.qty*(s.price||s.avg), pl = ((s.price||s.avg)-s.avg)*s.qty;
+    const plPct = ((pl/Math.max(s.qty*s.avg,1))*100).toFixed(1);
+    const cls = pl >= 0 ? 'positive' : 'negative';
+    return `<div class="asset-row">
+      <div class="asset-left">
+        <div class="asset-icon" style="background:${pl>=0?'rgba(52,211,153,0.1)':'rgba(248,113,113,0.1)'}">
+          ${pl>=0?'▲':'▼'}
+        </div>
+        <div>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <span class="asset-name">${s.name}</span>
+            <span class="badge ${s.type==='etf'?'badge-etf':'badge-stock'}">${(s.type||'stock').toUpperCase()}</span>
+          </div>
+          <div class="asset-ticker">${s.ticker} · ${s.qty}주 · ${s.price?Math.round(s.price).toLocaleString()+'원':'갱신 필요'}</div>
+        </div>
+      </div>
+      <div class="asset-right">
+        <div class="asset-value">${fmt(val)}</div>
+        <div class="asset-pl ${cls}">${fmtShort(pl)} (${pl>=0?'+':''}${plPct}%)</div>
+      </div>
+      <button class="del-btn" onclick="delStock(${i})">×</button>
+    </div>`;
+  }).join('');
+}
+
+function renderSimple(items, elId, badgeClass, label) {
+  const el = document.getElementById(elId);
+  if (!items.length) { el.innerHTML = '<div class="empty-state">항목을 추가해주세요</div>'; return; }
+  el.innerHTML = items.map((item,i) => `<div class="asset-row">
+    <div style="display:flex;align-items:center;gap:8px;">
+      <span class="badge ${badgeClass}">${label}</span>
+      <span class="asset-name">${item.name}</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <span class="asset-value">${fmt(item.amt)}</span>
+      <button class="del-btn" onclick="delItem('${elId}',${i})">×</button>
+    </div>
+  </div>`).join('');
+}
+
+// ── HISTORY ──
+let histChart = null;
+let currentPeriod = 30;
+
+function renderHistory() {
+  const hist = [...state.history].sort((a,b) => a.date.localeCompare(b.date));
+  const today = grandTotal();
+
+  document.getElementById('hist-today-val').textContent = fmt(today);
+  const chEl = document.getElementById('hist-today-change');
+  if (hist.length >= 2) {
+    const prev = hist[hist.length-1].total;
+    const diff = today - prev;
+    const pct = prev > 0 ? ((diff/prev)*100).toFixed(2) : '0.00';
+    chEl.textContent = `어제 대비 ${fmtShort(diff)} (${diff>=0?'+':''}${pct}%)`;
+    chEl.className = 'hist-change ' + (diff >= 0 ? 'positive' : 'negative');
+  } else {
+    chEl.textContent = '스냅샷을 저장하면 변화를 추적합니다';
+    chEl.className = 'hist-change';
+    chEl.style.color = 'var(--muted)';
+  }
+
+  renderHistChart(hist);
+  renderHistLog(hist);
+}
+
+function setPeriod(days, btn) {
+  currentPeriod = days;
+  document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const hist = [...state.history].sort((a,b) => a.date.localeCompare(b.date));
+  renderHistChart(hist);
+}
+
+function getWeekLabel(dateStr) {
+  const d = new Date(dateStr);
+  const month = d.getMonth() + 1;
+  const day = d.getDate();
+  // Get week of month
+  const weekNum = Math.ceil(day / 7);
+  return `${month}월 ${weekNum}주`;
+}
+
+function renderHistChart(hist) {
+  // Filter by period
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - currentPeriod);
+  const filtered = currentPeriod >= 99999 ? hist : hist.filter(h => new Date(h.date) >= cutoff);
+
+  // Group by week
+  const weekMap = {};
+  for (const h of filtered) {
+    const d = new Date(h.date);
+    // ISO week grouping: get Monday of that week
+    const day = d.getDay(); // 0=Sun
+    const diff = (day === 0 ? -6 : 1 - day);
+    const mon = new Date(d);
+    mon.setDate(d.getDate() + diff);
+    const weekKey = mon.toISOString().slice(0,10);
+    // Keep latest value in the week
+    if (!weekMap[weekKey] || h.date > weekMap[weekKey].date) {
+      weekMap[weekKey] = h;
+    }
+  }
+
+  const weekKeys = Object.keys(weekMap).sort();
+  const labels = weekKeys.map(k => {
+    const d = new Date(k);
+    return `${d.getMonth()+1}/${d.getDate()}주`;
+  });
+  const data = weekKeys.map(k => weekMap[k].total);
+
+  const ctx = document.getElementById('hist-chart').getContext('2d');
+  if (histChart) histChart.destroy();
+
+  if (!data.length) {
+    ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height);
+    ctx.fillStyle = 'rgba(122,127,150,0.5)';
+    ctx.font = '13px Pretendard, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('스냅샷 저장 후 그래프가 표시됩니다', ctx.canvas.width/2, 90);
+    return;
+  }
+
+  const minVal = Math.min(...data);
+  const maxVal = Math.max(...data);
+  const padding = (maxVal - minVal) * 0.1 || maxVal * 0.05;
+
+  histChart = new Chart(ctx, {
+    type: 'line',
     data: {
-      labels: cats.map(c => c.label),
-      datasets: [{ data: cats.map(c => c.val), backgroundColor: cats.map(c => c.color), borderWidth: 0, hoverOffset: 6 }]
+      labels,
+      datasets: [{
+        data,
+        borderColor: '#5B8AF0',
+        backgroundColor: 'rgba(91,138,240,0.08)',
+        borderWidth: 2,
+        pointBackgroundColor: '#5B8AF0',
+        pointRadius: 4,
+        pointHoverRadius: 6,
+        fill: true,
+        tension: 0.35,
+      }]
     },
     options: {
-      cutout: '70%',
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        x: {
+          grid: {
+            color: 'rgba(42,47,66,0.8)',
+            lineWidth: 1,
+          },
+          ticks: {
+            color: '#7A7F96',
+            font: { size: 11, family: 'Pretendard' },
+            maxRotation: 0,
+          },
+          border: { color: 'rgba(42,47,66,0.5)' }
+        },
+        y: {
+          grid: {
+            color: 'rgba(42,47,66,0.8)',
+            lineWidth: 1,
+          },
+          ticks: {
+            color: '#7A7F96',
+            font: { size: 11, family: 'Pretendard' },
+            callback: v => {
+              if (v >= 1e8) return (v/1e8).toFixed(1) + '억';
+              if (v >= 1e4) return (v/1e4).toFixed(0) + '만';
+              return v.toLocaleString();
+            },
+            maxTicksLimit: 5,
+          },
+          min: Math.max(0, minVal - padding),
+          max: maxVal + padding,
+          border: { color: 'rgba(42,47,66,0.5)' }
+        }
+      },
       plugins: {
         legend: { display: false },
-        tooltip: { callbacks: { label: ctx => ' ' + fmt(ctx.raw) } }
+        tooltip: {
+          backgroundColor: '#1F2435',
+          borderColor: '#2A2F42',
+          borderWidth: 1,
+          titleColor: '#7A7F96',
+          bodyColor: '#E8EAF0',
+          bodyFont: { size: 14, weight: '600', family: 'Pretendard' },
+          callbacks: {
+            label: ctx => ' ' + fmt(ctx.raw),
+            afterLabel: (ctx) => {
+              const i = ctx.dataIndex;
+              if (i === 0) return '';
+              const diff = data[i] - data[i-1];
+              return (diff >= 0 ? ' +' : ' ') + fmtShort(Math.abs(diff)).replace(/^[+-]/,'') + (diff >= 0 ? ' ▲' : ' ▼');
+            }
+          }
+        }
       },
       animation: { duration: 400 }
     }
   });
 }
 
-function iconFor(type) {
-  const icons = { stock: '📈', etf: '📊', cash: '💵', re: '🏠', irp: '🏦' };
-  const bgs = { stock: '#1A2240', etf: '#1A2E24', cash: '#2E2710', re: '#2E1020', irp: '#1E1A34' };
-  return { icon: icons[type] || '💼', bg: bgs[type] || '#1A1A2E' };
-}
-
-function renderStocks() {
-  const el = document.getElementById('stock-list');
-  if (!state.stocks.length) { el.innerHTML = '<div class="empty-state">보유 종목을 추가해주세요</div>'; return; }
-  el.innerHTML = state.stocks.map((s, i) => {
-    const val = s.qty * (s.price || s.avg);
-    const pl = (s.price || s.avg) - s.avg;
-    const plTotal = pl * s.qty;
-    const plPct = ((pl / s.avg) * 100).toFixed(1);
-    const plCls = plTotal >= 0 ? 'positive' : 'negative';
-    const { icon, bg } = iconFor(s.type || 'stock');
-    const isKR = /^\d{6}$/.test(s.ticker);
-    const pricePer = (s.price || s.avg).toLocaleString('ko-KR') + '원';
-    return `<div class="asset-row">
-      <div class="asset-left">
-        <div class="asset-icon" style="background:${bg}">${icon}</div>
-        <div>
-          <div style="display:flex;align-items:center;gap:6px;">
-            <span class="asset-name">${s.name}</span>
-            <span class="badge ${s.type === 'etf' ? 'badge-etf' : 'badge-stock'}">${(s.type||'stock').toUpperCase()}</span>
-          </div>
-          <div class="asset-ticker">${s.ticker} · ${s.qty}주 · ${pricePer}${s.price ? '' : ' (갱신 필요)'}</div>
-        </div>
+function renderHistLog() {
+  const el = document.getElementById('hist-log');
+  const hist = [...state.history].sort((a,b) => b.date.localeCompare(a.date));
+  if (!hist.length) { el.innerHTML = '<div class="empty-hist">아직 기록이 없어요.<br>스냅샷을 저장하면 여기에 쌓입니다.</div>'; return; }
+  el.innerHTML = hist.map((h,i) => {
+    const prev = hist[i+1];
+    const diff = prev ? h.total - prev.total : null;
+    const cls = diff === null ? '' : diff >= 0 ? 'positive' : 'negative';
+    const diffStr = diff === null ? '첫 기록' : fmtShort(diff);
+    const d = new Date(h.date);
+    const dateLabel = `${d.getFullYear()}. ${d.getMonth()+1}. ${d.getDate()}`;
+    return `<div class="log-item">
+      <span class="log-date">${dateLabel}</span>
+      <div class="log-right">
+        <div class="log-total">${fmt(h.total)}</div>
+        <div class="log-delta ${cls}">${diffStr}</div>
       </div>
-      <div class="asset-right">
-        <div class="asset-value">${fmt(val)}</div>
-        <div class="asset-pl ${plCls}">${fmtShort(plTotal)} (${plTotal >= 0 ? '+' : ''}${plPct}%)</div>
-      </div>
-      <button class="del-btn" onclick="deleteStock(${i})" title="삭제">×</button>
     </div>`;
   }).join('');
 }
 
-function renderSimpleList(items, elId, badgeClass, icon) {
-  const el = document.getElementById(elId);
-  if (!items.length) { el.innerHTML = '<div class="empty-state">항목을 추가해주세요</div>'; return; }
-  el.innerHTML = items.map((item, i) => `<div class="asset-row">
-    <div class="asset-left">
-      <div class="asset-icon" style="background:#1A1A2E">${icon}</div>
-      <span class="asset-name">${item.name}</span>
-    </div>
-    <div class="asset-right"><div class="asset-value">${fmt(item.amt)}</div></div>
-    <button class="del-btn" onclick="deleteItem('${elId}',${i})" title="삭제">×</button>
-  </div>`).join('');
+function recordSnapshot() {
+  const today = todayStr();
+  const total = grandTotal();
+  if (total === 0) { alert('자산 데이터가 없습니다. 먼저 자산을 입력해주세요.'); return; }
+  const existing = state.history.findIndex(h => h.date === today);
+  if (existing >= 0) {
+    if (!confirm(`오늘(${today}) 스냅샷이 이미 있습니다. 덮어쓸까요?`)) return;
+    state.history[existing].total = total;
+  } else {
+    state.history.push({ date: today, total });
+  }
+  saveState();
+  renderHistory();
+  alert(`오늘 자산 ${fmt(total)} 저장 완료!`);
 }
 
-function renderAllList() {
-  const el = document.getElementById('all-list');
-  const rows = [
-    ...state.stocks.map(s => ({ label: (s.type||'stock').toUpperCase(), cls: s.type === 'etf' ? 'badge-etf' : 'badge-stock', name: s.name, val: s.qty * (s.price || s.avg) })),
-    ...state.cash.map(c => ({ label: '현금', cls: 'badge-cash', name: c.name, val: c.amt })),
-    ...state.re.map(r => ({ label: '부동산', cls: 'badge-real', name: r.name, val: r.amt })),
-    ...state.irp.map(r => ({ label: 'IRP', cls: 'badge-irp', name: r.name, val: r.amt })),
-  ];
-  if (!rows.length) { el.innerHTML = '<div class="empty-state">자산을 추가하면 여기에 표시됩니다</div>'; return; }
-  rows.sort((a, b) => b.val - a.val);
-  el.innerHTML = rows.map(r => `<div class="asset-row">
-    <div style="display:flex;align-items:center;gap:8px;">
-      <span class="badge ${r.cls}">${r.label}</span>
-      <span class="asset-name">${r.name}</span>
-    </div>
-    <div class="asset-value">${fmt(r.val)}</div>
-  </div>`).join('');
-}
-
-function renderAll() {
-  renderSummary();
-  renderDonut();
-  renderStocks();
-  renderSimpleList(state.cash, 'cash-list', 'badge-cash', '💵');
-  renderSimpleList(state.re, 're-list', 'badge-real', '🏠');
-  renderSimpleList(state.irp, 'irp-list', 'badge-irp', '🏦');
-  renderAllList();
-}
-
-// ─── ADD / DELETE ─────────────────────────────────────────────────────────────
+// ── ADD / DELETE ──
 function addStock() {
   const ticker = document.getElementById('s-ticker').value.trim().toUpperCase();
   const name = document.getElementById('s-name').value.trim();
   const qty = parseFloat(document.getElementById('s-qty').value);
   const avg = parseFloat(document.getElementById('s-avg').value);
-  if (!ticker || !name || !qty || !avg) { alert('모든 항목을 입력해주세요'); return; }
+  if (!ticker||!name||!qty||!avg) { alert('모든 항목을 입력해주세요'); return; }
   const isKR = /^\d{6}$/.test(ticker);
-  const type = (!isKR && (ticker.includes('ETF') || ticker.startsWith('KODEX') || ['VOO','SPY','QQQ','TIGER'].some(t => name.includes(t)))) ? 'etf' : 'stock';
+  const nameUp = name.toUpperCase();
+  const type = (!isKR && ['VOO','SPY','QQQ','IVV','SCHD'].includes(ticker)) || name.includes('KODEX')||name.includes('TIGER')||name.includes('KBSTAR')||name.includes('ETF') ? 'etf' : 'stock';
   state.stocks.push({ ticker, name, qty, avg, price: null, type });
-  ['s-ticker','s-name','s-qty','s-avg'].forEach(id => document.getElementById(id).value = '');
-  saveState();
-  renderAll();
+  ['s-ticker','s-name','s-qty','s-avg'].forEach(id => document.getElementById(id).value='');
+  saveState(); renderAll();
   refreshPrices();
 }
-
 function addCash() {
   const name = document.getElementById('c-name').value.trim();
   const amt = parseFloat(document.getElementById('c-amt').value);
-  if (!name || !amt) { alert('항목명과 금액을 입력해주세요'); return; }
-  state.cash.push({ id: uid(), name, amt });
-  document.getElementById('c-name').value = '';
-  document.getElementById('c-amt').value = '';
+  if (!name||!amt) { alert('항목명과 금액을 입력해주세요'); return; }
+  state.cash.push({ id:uid(), name, amt });
+  document.getElementById('c-name').value='';
+  document.getElementById('c-amt').value='';
   saveState(); renderAll();
 }
-
 function addRE() {
   const name = document.getElementById('r-name').value.trim();
   const amt = parseFloat(document.getElementById('r-amt').value);
-  if (!name || !amt) { alert('항목명과 금액을 입력해주세요'); return; }
-  state.re.push({ id: uid(), name, amt });
-  document.getElementById('r-name').value = '';
-  document.getElementById('r-amt').value = '';
+  if (!name||!amt) { alert('항목명과 금액을 입력해주세요'); return; }
+  state.re.push({ id:uid(), name, amt });
+  document.getElementById('r-name').value='';
+  document.getElementById('r-amt').value='';
   saveState(); renderAll();
 }
-
 function addIRP() {
   const name = document.getElementById('i-name').value.trim();
   const amt = parseFloat(document.getElementById('i-amt').value);
-  if (!name || !amt) { alert('항목명과 금액을 입력해주세요'); return; }
-  state.irp.push({ id: uid(), name, amt });
-  document.getElementById('i-name').value = '';
-  document.getElementById('i-amt').value = '';
+  if (!name||!amt) { alert('항목명과 금액을 입력해주세요'); return; }
+  state.irp.push({ id:uid(), name, amt });
+  document.getElementById('i-name').value='';
+  document.getElementById('i-amt').value='';
   saveState(); renderAll();
 }
-
-function deleteStock(i) {
-  if (!confirm(`"${state.stocks[i].name}" 종목을 삭제할까요?`)) return;
-  state.stocks.splice(i, 1);
-  saveState(); renderAll();
+function delStock(i) {
+  if (!confirm(`"${state.stocks[i].name}" 삭제할까요?`)) return;
+  state.stocks.splice(i,1); saveState(); renderAll();
+}
+function delItem(elId, i) {
+  const map = {'cash-list':'cash','re-list':'re','irp-list':'irp'};
+  const key = map[elId]; if (!key) return;
+  if (!confirm(`"${state[key][i].name}" 삭제할까요?`)) return;
+  state[key].splice(i,1); saveState(); renderAll();
 }
 
-function deleteItem(elId, i) {
-  const map = { 'cash-list': 'cash', 're-list': 're', 'irp-list': 'irp' };
-  const key = map[elId];
-  if (!key) return;
-  if (!confirm(`"${state[key][i].name}" 항목을 삭제할까요?`)) return;
-  state[key].splice(i, 1);
-  saveState(); renderAll();
-}
-
-// ─── TABS ────────────────────────────────────────────────────────────────────
-const TABS = ['overview','stocks','cash','re','irp'];
+// ── TABS ──
+const TABS = ['overview','stocks','cash','re','irp','history'];
 function showTab(name) {
-  TABS.forEach(t => {
-    document.getElementById('tab-' + t).style.display = t === name ? '' : 'none';
-  });
-  document.querySelectorAll('.tab').forEach((el, i) => {
-    el.classList.toggle('active', TABS[i] === name);
-  });
+  TABS.forEach(t => document.getElementById('tab-'+t).style.display = t===name?'':'none');
+  document.querySelectorAll('.tab').forEach((el,i) => el.classList.toggle('active', TABS[i]===name));
+  if (name === 'history') renderHistory();
 }
 
-// ─── MODAL ───────────────────────────────────────────────────────────────────
-function closeModal() { document.getElementById('modal').classList.remove('open'); }
-document.getElementById('modal').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
+// ── RENDER ALL ──
+function renderAll() {
+  renderSummary();
+  renderGauge();
+  renderAllList();
+  renderStocks();
+  renderSimple(state.cash, 'cash-list', 'badge-cash', '현금');
+  renderSimple(state.re, 're-list', 'badge-real', '부동산');
+  renderSimple(state.irp, 'irp-list', 'badge-irp', 'IRP');
+}
 
-// ─── INIT ────────────────────────────────────────────────────────────────────
 loadState();
 renderAll();
 if (state.lastUpdated) document.getElementById('last-updated').textContent = `마지막 업데이트: ${state.lastUpdated}`;
