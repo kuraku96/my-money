@@ -464,13 +464,37 @@ function load(){try{const s=localStorage.getItem(LS);if(s)Object.assign(state,JS
 function save(){localStorage.setItem(LS,JSON.stringify(state));}
 
 // ── FX ──
+// 여러 프록시 순서대로 시도 (하나 막히면 다음 것으로)
+const PROXIES=[
+  url=>`https://corsproxy.io/?${encodeURIComponent(url)}`,
+  url=>`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`,
+  url=>`https://cors-anywhere.herokuapp.com/${url}`,
+];
+
+async function yahooFetch(yahooUrl){
+  for(const makeProxy of PROXIES){
+    try{
+      const proxy=makeProxy(yahooUrl);
+      const res=await fetch(proxy,{signal:AbortSignal.timeout(7000)});
+      if(!res.ok)continue;
+      const text=await res.text();
+      // corsproxy.io returns raw JSON, allorigins wraps in {contents:...}
+      let json;
+      try{json=JSON.parse(text);}catch{continue;}
+      // allorigins wraps response
+      if(json.contents){try{json=JSON.parse(json.contents);}catch{continue;}}
+      return json;
+    }catch(e){continue;}
+  }
+  return null;
+}
+
 async function fetchUsdKrw(){
   const dot=document.getElementById('fx-dot');
   dot.className='fx-dot loading';
   try{
     const url='https://query1.finance.yahoo.com/v8/finance/chart/KRW%3DX?interval=1d&range=1d';
-    const res=await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`,{signal:AbortSignal.timeout(6000)});
-    const j=await res.json();const d=JSON.parse(j.contents);
+    const d=await yahooFetch(url);
     const r=d?.chart?.result?.[0]?.meta?.regularMarketPrice;
     if(r){state.usdKrw=r;document.getElementById('fx-label').textContent=`$1 = ₩${Math.round(r).toLocaleString('ko-KR')}`;dot.className='fx-dot';}
     else dot.className='fx-dot loading';
@@ -480,10 +504,8 @@ async function fetchUsdKrw(){
 async function fetchPrice(ticker){
   const sym=/^\d{6}$/.test(ticker)?ticker+'.KS':ticker;
   const url=`https://query1.finance.yahoo.com/v8/finance/chart/${sym}?interval=1d&range=1d`;
-  const proxy=`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
   try{
-    const res=await fetch(proxy,{signal:AbortSignal.timeout(8000)});
-    const j=await res.json();const d=JSON.parse(j.contents);
+    const d=await yahooFetch(url);
     const price=d?.chart?.result?.[0]?.meta?.regularMarketPrice;
     const currency=d?.chart?.result?.[0]?.meta?.currency;
     return price?{price,currency}:null;
@@ -519,10 +541,8 @@ async function fetchTickerName(ticker){
   hint.style.display='block';hint.textContent='조회 중...';hint.style.color='var(--muted)';
   const sym=/^\d{6}$/.test(ticker)?ticker+'.KS':ticker;
   const url=`https://query1.finance.yahoo.com/v8/finance/chart/${sym}?interval=1d&range=1d`;
-  const proxy=`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
   try{
-    const res=await fetch(proxy,{signal:AbortSignal.timeout(6000)});
-    const j=await res.json();const d=JSON.parse(j.contents);
+    const d=await yahooFetch(url);
     const meta=d?.chart?.result?.[0]?.meta;
     if(meta){
       const name=meta.shortName||meta.longName||'';
